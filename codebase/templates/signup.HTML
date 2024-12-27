@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel = "stylesheet" href = "static/css/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="">Home</a>
+        <a href="login">Login</a>
+        <a href="signup">Signup</a>
+    </nav>
+    <div class="page-container">
+        <div class="signup-section">
+            <h1>Signup</h1>
+            <div class="form-container">
+                <form>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Signup</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="webcam-section">
+            <h1>Webcam Access</h1>
+            <div class="webcam-container">
+                <video id="webcam" width="640" height="720" autoplay></video>
+            </div>
+        </div>
+    </div>
+    
+    <script src="static/js/script.js"></script>
+</body>
+</html>

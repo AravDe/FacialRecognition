@@ -1,0 +1,141 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+nav {
+    background-color: #0073e6;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding-left: 10px;
+    margin-top: 20px;
+}
+
+form label {
+    margin: 10px 0 5px;
+}
+
+form input {
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #005bb5;
+}
+
+/* Page Container */
+.page-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal sections */
+    grid-gap: 50px; /* Space between columns */
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Signup Section */
+.signup-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signup-section h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Webcam Section */
+.webcam-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.webcam-section h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #28a745;
+}
+
+.webcam-container {
+    width: 100%;
+    max-width: 400px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px100px rgba(0, 0, 0, 0.1);
+    margin-top: 100px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .page-container {
+        grid-template-columns: 1fr; /* Stack sections */
+    }
+
+    .signup-section, .webcam-section {
+        text-align: center;
+    }
+
+    .form-container, .webcam-container {
+        width: 90%;
+    }
+}

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav>
+        <a href="">Home</a>
+        <a href="login">Login</a>
+        <a href="signup">Sign Up</a>
+    </nav>
+    <main>
+        <h1>Welcome to Our App , {{user}} </h1>
+        <p>This is the landing page. Feel free to navigate through the links above.</p>
+    </main>
+</body>
+</html>
