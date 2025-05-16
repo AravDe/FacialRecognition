@@ -23,7 +23,6 @@ def signup():
     facrec.generate_hls_stream()  # Generate the HLS stream
     return render_template('video.html')
 
-
 @app.route('/hls/<filename>')
 def hls_file(filename):
     return Response(

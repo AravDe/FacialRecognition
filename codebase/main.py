@@ -6,9 +6,11 @@ import albumentations as aug
 
 
 class FacialRecognition:
-    def __init__(self, dataset_path = "images", model_path = 'face_model.yml', target_size = (100,100),):
+    def __init__(self, dataset_path = "images", model_path = 'face_model.yml', target_size = (100,100)):
         
         self.faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+        # self.eyeCascade = cv2.CascadeClassifier('haarcascade_eye.xml')
 
         self.recognizer = cv2.face.LBPHFaceRecognizer_create()
 
@@ -24,11 +26,22 @@ class FacialRecognition:
     def train_model(self):
         faces = []
         labels = []
-        label_id = 0
+        label_dict = {"Known" : 1, "Unknown" : -1}
+        for person_name in os.listdir(self.dataset_path + "/Negative"):
+            person_path = os.path.join(self.dataset_path + "/Negative", person_name)
+            if not os.path.isdir(person_path):
+                continue
 
-        for person_name in os.listdir(self.dataset_path):
-            print (os.listdir(self.dataset_path))
-            person_path = os.path.join(self.dataset_path, person_name)
+            for image_name in os.listdir(person_path):
+                image_path = os.path.join(person_path, image_name)  
+                image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+                faces.append(image)
+                labels.append(label_dict["Unknown"])
+            self.names.append("Unknown")
+            
+        for person_name in os.listdir(self.dataset_path + "/Positive"):
+            person_path = os.path.join(self.dataset_path + "/Positive", person_name)
             if not os.path.isdir(person_path):
                 continue
 
@@ -37,20 +50,18 @@ class FacialRecognition:
                 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
                 faces.append(image)
-                labels.append(label_id)
+                labels.append(label_dict["Known"])
             self.names.append(person_name)
-            
-            label_id += 1
-
+            label_dict["Known"] += 1
         labelsfin = np.array(labels, dtype=np.int32)
-
-        print(self.names)
 
         self.recognizer.train(faces, labelsfin)
 
         self.recognizer.save(self.model_path)
 
         self.recognizer.read(self.model_path)
+
+        print(labels)
 
     def generate_frames(self):
         try:
@@ -75,9 +86,7 @@ class FacialRecognition:
 
                     grey_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-                    detected_faces = self.faceCascade.detectMultiScale(
-                        grey_frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30)
-                    )
+                    detected_faces = self.faceCascade.detectMultiScale(grey_frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
                     print(f"Faces detected: {len(detected_faces)}")
 
@@ -87,10 +96,9 @@ class FacialRecognition:
                         cropped_image = grey_frame[y:y+h, x:x+w]
                         resized_image = cv2.resize(cropped_image, self.target_size)
                         label, confidence = self.recognizer.predict(resized_image)
-
-                        if confidence >= 60:
+                        if label > 0:
                             cv2.putText(frame, f"{self.names[label]}, {confidence}",(x, y -10), cv2.FONT_HERSHEY_COMPLEX, 0.9, (36,255,12),2)
-                        if confidence < 60:
+                        else:
                             cv2.putText(frame, f"Unknown",(x, y -10), cv2.FONT_HERSHEY_COMPLEX, 0.9, (36,255,12),2)
 
                     # Display the video feed
@@ -116,12 +124,14 @@ class FacialRecognition:
         try:
             print("Starting face recognition...")
             self.face_recognition = FacialRecognition()
+        
             print("Face recognition system is ready.")
             # Testing the webcam stream (uncomment below line to test directly with OpenCV)
+            self.face_recognition.train_model()
             self.face_recognition.generate_frames()
         except Exception as e:
             print(f"An error occurred: {e}")
 
-    if __name__ == "__main__":
-        main()
-        
+if __name__ == "__main__":
+    obj = FacialRecognition()
+    obj.main()
