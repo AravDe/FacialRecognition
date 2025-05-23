@@ -23,12 +23,5 @@ def signup():
     facrec.generate_hls_stream()  # Generate the HLS stream
     return render_template('video.html')
 
-@app.route('/hls/<filename>')
-def hls_file(filename):
-    return Response(
-        open(os.path.join("static/hls", filename), 'rb'),
-        mimetype='application/vnd.apple.mpegurl' if filename.endswith('.m3u8') else 'video/MP2T'
-    )
-
 if __name__ == '__main__':
     app.run(debug = True)
