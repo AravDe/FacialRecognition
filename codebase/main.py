@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import traceback
 import os
-import albumentations as aug
+import aug
 
 
 class FacialRecognition:
@@ -33,29 +33,34 @@ class FacialRecognition:
                 continue
 
             for image_name in os.listdir(person_path):
-                image_path = os.path.join(person_path, image_name)  
-                image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
-                faces.append(image)
-                labels.append(label_dict["Unknown"])
+                image_path = os.path.join(person_path, image_name)
+                try:
+                    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)                    
+                    faces.append(image)
+                    labels.append(label_dict["Unknown"])
+                except:
+                    print(f"Deleting: {image_path}")
+                    os.remove(image_path)
             self.names.append("Unknown")
             
         for person_name in os.listdir(self.dataset_path + "/Positive"):
             person_path = os.path.join(self.dataset_path + "/Positive", person_name)
             if not os.path.isdir(person_path):
                 continue
-
+            print(person_name)
             for image_name in os.listdir(person_path):
                 image_path = os.path.join(person_path, image_name)
                 image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-
-                faces.append(image)
-                labels.append(label_dict["Known"])
+                if image is None:
+                    continue
+                else:
+                    faces.append(image)
+                    labels.append(label_dict["Known"])
             self.names.append(person_name)
             label_dict["Known"] += 1
-        labelsfin = np.array(labels, dtype=np.int32)
+        labels_fin = np.array(labels, dtype=np.int32)
 
-        self.recognizer.train(faces, labelsfin)
+        self.recognizer.train(faces, labels_fin)
 
         self.recognizer.save(self.model_path)
 
